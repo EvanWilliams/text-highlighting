@@ -3,8 +3,8 @@ import Highlight from './Highlight'
 import './App.css';
 
 
-var string = 'You will deliver new technology with an adorable puppy. Perfect!'
-var highlights = [
+let string = 'You will deliver new technology with an adorable puppy. Perfect!'
+let highlights = [
   {
     startOffset: 4,
     endOffset: 20,
@@ -33,17 +33,17 @@ var highlights = [
   }
 ];
 
-var colorMap = {
+let colorMap = {
   100:'#ffffff'//no highlight
   //more could be predefined
 }
 
-var highlightArray = initializeList(string.length);
+let highlightArray = initializeList(string.length);
 
 function initializeList(stringLength){
-  var array = []
-  for( let i=0; i<stringLength; i++){
-    array.push(100);
+  let array = []
+  for( let i = 0; i<stringLength; i++){
+    array.push(100); //100 signifies emptiness
   }
   return array;
 }
@@ -59,8 +59,9 @@ function ApplyHighlights(highlights) {
   function addHighlightLayer(min,max,priority,color){
     if(!colorMap[priority]){
       colorMap[priority] = color;
+      //colorMap to maintain a list of colors with coresponding priorities
     }
-    for( var i = min; i <= max; i++ ){
+    for( let i = min; i <= max; i++ ){
       if( highlightArray[i] > priority){
         highlightArray[i] = priority;
       }
@@ -70,9 +71,9 @@ function ApplyHighlights(highlights) {
   let result = []
 
   function createChunks(array){
-    var minIndex;
-    var priority;
-    for (var i = 0; i < array.length; i++){
+    let minIndex;
+    let priority;
+    for (let i = 0; i < array.length; i++){
       if(i === 0){
         minIndex = i;
         priority = array[i];
@@ -80,12 +81,12 @@ function ApplyHighlights(highlights) {
       else if(priority !== array[i]){
         //found a new priority
         result.push({"minIndex":minIndex,"maxIndex":i-1,"priority":priority, "color": colorMap[priority]});
-        //push object using maxIndex and minIndex, then set minIndex and priority for new substring at same index
+        //push object using minIndex,and the i iterator then set minIndex and priority for new substring at same index
         minIndex = i-1;
         priority = array[i];
       }
     }
-    //Last substring
+    //Last substring is implied
     result.push({"minIndex":minIndex,"maxIndex":string.length,"priority":priority, "color": colorMap[priority]});
     return result;
   }
